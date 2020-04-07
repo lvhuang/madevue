@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+
+    <script>
+        let oldArrayProtoMethods = Array.prototype
+        // 2 复制一份新的  然后修改新的
+        let arrayMethods = Object.create(oldArrayProtoMethods)
+        // 3 可以修改数组的方法关键字
+        let methods = [
+            'push', 'shift', 'unshift', 'pop', 'reverse', 'sort', 'splice'
+        ]
+        // 4 循环重写这些方法 
+        methods.forEach(method => {
+            arrayMethods[method] = function (...args) {
+                // 5 调用老方法 去执行监听新增属性以外的事情
+                console.log(this);
+                
+                let res = oldArrayProtoMethods[method].apply(this, args)
+                // TODO 实现新增属性监听 
+                console.log('实现监听了数组属性的方法')
+                // TODO 通知使用的其它人改变
+                // 6. 返回结果执行结果
+                return res
+
+            }
+        })
+        var dd = [1];
+        dd.push(2)
+        console.log(dd);
+        
+        
+    </script>
+</body>
+
+</html>
